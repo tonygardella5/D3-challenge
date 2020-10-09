@@ -61,8 +61,8 @@ function xScale(data, chosenXAxis) {
   var xMin = d3.min(data, d => parseInt(d[chosenXAxis]) * .8);
   var xMax = d3.max(data, d => parseInt(d[chosenXAxis]) * 1.2);
   xBounds(chosenXAxis);
-  console.log(xMin);
-  console.log(xMax);
+  //console.log(xMin);
+  //console.log(xMax);
   var xLinearScale = d3
     .scaleLinear()
     .domain([xMin, xMax])
@@ -77,8 +77,8 @@ function yScale(data, chosenYAxis) {
   var yMin = d3.min(data, d => parseInt(d[chosenYAxis]) * .8);
   var yMax = d3.max(data, d => parseInt(d[chosenYAxis]) * 1.2);
   xBounds(chosenYAxis);
-  console.log(yMin);
-  console.log(yMax);
+  //console.log(yMin);
+  //console.log(yMax);
   var yLinearScale = d3
     .scaleLinear()
     .domain([yMin, yMax])
@@ -267,8 +267,8 @@ var healthcareLabel = labelsYGroup.append("text")
         // replaces chosenXAxis with value
         chosenXAxis = value;
 
-        console.log(chosenXAxis);
-        console.log(chosenYAxis);
+        //console.log(chosenXAxis);
+        //console.log(chosenYAxis);
 
 
         // functions here found above csv import
@@ -329,8 +329,8 @@ var healthcareLabel = labelsYGroup.append("text")
         // replaces chosenXAxis with value
         chosenYAxis = value;
 
-        console.log(chosenXAxis);
-        console.log(chosenYAxis);
+        //console.log(chosenXAxis);
+        //console.log(chosenYAxis);
 
         // functions here found above csv import
         // updates x scale for new data
