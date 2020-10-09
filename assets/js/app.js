@@ -26,14 +26,31 @@ var chartGroup = svg.append("g")
 
 // Initial Params
 var chosenXAxis = "poverty";
-
+var xMin;
+var xMax;
+function xBounds(data, chosenXAxis) {
+  // min will grab the smallest datum from the selected column.
+  xMin = d3.min(data, function(d) {
+    return parseFloat(d[chosenXAxis]) * 0.90;
+  });
+  
+  // .max will grab the largest datum from the selected column.
+  xMax = d3.max(data, function(d) {
+    return parseFloat(d[chosenXAxis]) * 1.10;
+  });
+}
 // function used for updating x-scale var upon click on axis label
 function xScale(data, chosenXAxis) {
   // create scales
-  var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(data, d => d[chosenXAxis]) * 0.8,
-      d3.max(data, d => d[chosenXAxis]) * 1.2
-    ])
+
+  var xMin = d3.min(data, d => parseInt(d[chosenXAxis]) * .8);
+  var xMax = d3.max(data, d => parseInt(d[chosenXAxis]) * 1.2);
+  xBounds(chosenXAxis);
+  console.log(xMin);
+  console.log(xMax);
+  var xLinearScale = d3
+    .scaleLinear()
+    .domain([xMin, xMax])
     .range([0, width]);
 
   return xLinearScale;
@@ -98,11 +115,12 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("assets/data/data.csv").then(function(data) {
-  console.log(data);
+d3.csv("/assets/data/data.csv").then(function(data) {
+  
   // xLinearScale function above csv import
   var xLinearScale = xScale(data, chosenXAxis);
-
+  
+  console.log(xMin, xMax);
   // Create y scale function
   var yLinearScale = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.obesity)])
@@ -133,7 +151,7 @@ d3.csv("assets/data/data.csv").then(function(data) {
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
-  // Create group for two x-axis labels
+  // Create group for three x-axis labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
