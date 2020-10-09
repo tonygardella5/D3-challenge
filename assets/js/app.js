@@ -168,7 +168,7 @@ function updateXToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("/assets/data/data.csv").then(function(data) {
+d3.csv("D3-challenge/assets/data/data.csv").then(function(data) {
   
   // xLinearScale function above csv import
   var xLinearScale = xScale(data, chosenXAxis);
@@ -203,7 +203,7 @@ d3.csv("/assets/data/data.csv").then(function(data) {
     .attr("fill", "red")
     .attr("opacity", ".5")
     ;
-
+  
   // Create group for three x-axis labels
   var labelsXGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
