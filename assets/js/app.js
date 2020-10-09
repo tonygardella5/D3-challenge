@@ -168,7 +168,7 @@ function updateXToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("/assets/data/data.csv").then(function(data) {
+d3.csv("assets/data/data.csv").then(function(data) {
   
   // xLinearScale function above csv import
   var xLinearScale = xScale(data, chosenXAxis);
