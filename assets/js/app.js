@@ -108,17 +108,23 @@ function renderYAxes(newYScale, yAxis) {
 }
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis) {
+function renderCircles(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis, textLabels) {
 
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]))
     .attr("cy", d => newYScale(d[chosenYAxis]))
     ;
-
   return circlesGroup;
 }
-
+function renderText(circlesGroup, newXScale, newYScale, chosenXAxis, chosenYAxis, textLabels) {
+  textLabels.transition()
+  .duration(1000)
+  .attr("cx", d => newXScale(d[chosenXAxis]))
+  .attr("cy", d => newYScale(d[chosenYAxis]))
+  ;
+  return textLabels;
+}
 // function used for updating circles group with new tooltip
 function updateXToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
@@ -193,17 +199,30 @@ d3.csv("/assets/data/data.csv").then(function(data) {
     .call(leftAxis);
 
   // append initial circles
-  var circlesGroup = chartGroup.selectAll("circle")
-    .data(data)
-    .enter()
-    .append("circle")
+  var circle = chartGroup.selectAll("g text")
+    .data(data);
+  var elemEnter = circle.enter()
+    .append("g");
+  var circlesGroup = elemEnter.append("circle")
+    .attr("r", function(d){return d.r})
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
     .attr("r", 10)
     .attr("fill", "red")
-    .attr("opacity", ".5")
-    ;
+    .attr("opacity", ".3");
+  /*var text = svg.selectAll("text")
+    .data(data)
+    .enter()
+    .append(function(d){return d.abbv});
+  var textLabels = text
+    .attr("x", function(d) {return d.cx;})
+    .attr("y", function(d) {return d.cy;})
+    .text(function(d){return d.abbv})
+    console.log(text);*/
   
+  /*elemEnter.append("text")
+    .attr("dx", function(d){return -20})
+    .text(function(d){return d.abbr});*/
   // Create group for three x-axis labels
   var labelsXGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
@@ -279,8 +298,8 @@ var healthcareLabel = labelsYGroup.append("text")
         xAxis = renderXAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
-
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis, textLabels);
+        circlesText = renderText(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis, textLabels);
         // updates tooltips with new info
         circlesGroup = updateXToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
@@ -340,7 +359,8 @@ var healthcareLabel = labelsYGroup.append("text")
         yAxis = renderYAxes(yLinearScale, yAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis, textLabels);
+        circlesText = renderText(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis, textLabels);
 
         // updates tooltips with new info
         circlesGroup = updateXToolTip(chosenXAxis, chosenYAxis, circlesGroup);
