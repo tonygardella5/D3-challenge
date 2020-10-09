@@ -210,6 +210,7 @@ d3.csv("/assets/data/data.csv").then(function(data) {
     .attr("r", 10)
     .attr("fill", "red")
     .attr("opacity", ".3");
+  var textLabels;
   /*var text = svg.selectAll("text")
     .data(data)
     .enter()
